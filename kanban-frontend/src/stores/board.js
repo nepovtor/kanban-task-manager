@@ -8,8 +8,9 @@ export const useBoardStore = defineStore('board', {
   }),
   actions: {
     async fetchBoard() {
-      const res = await axios.get(`http://localhost:3000/api/columns/board/${this.boardId}`);
-      this.columns = res.data;
+      const res = await axios.get(`http://localhost:3000/api/columns/board/${this.boardId}`)
+      console.log('\ud83d\udce6 Columns loaded:', res.data)
+      this.columns = res.data
     },
     async moveTask(taskId, newColumnId, newPosition) {
       await axios.put(`http://localhost:3000/api/tasks/${taskId}/move`, {
