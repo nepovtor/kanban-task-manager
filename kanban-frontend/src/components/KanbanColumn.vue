@@ -1,7 +1,7 @@
 <template>
   <div class="kanban-column" :data-column-id="column.id">
     <h3>{{ column.title }}</h3>
-    <draggable
+    <VueDraggableNext
       :list="column.tasks"
       group="tasks"
       item-key="id"
@@ -10,12 +10,12 @@
       <template #item="{ element }">
         <KanbanTask :task="element" />
       </template>
-    </draggable>
+    </VueDraggableNext>
   </div>
 </template>
 
 <script setup>
-import draggable from 'vuedraggable'
+import { VueDraggableNext } from 'vue-draggable-next'
 import KanbanTask from './KanbanTask.vue'
 
 const props = defineProps(['column'])
