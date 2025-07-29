@@ -16,11 +16,11 @@ router.get('/', async (req, res) => {
 
 // Создать доску
 router.post('/', async (req, res) => {
-  const { title } = req.body;
+  const { name } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO boards (title) VALUES ($1) RETURNING *',
-      [title]
+      'INSERT INTO boards (name) VALUES ($1) RETURNING *',
+      [name]
     );
     res.json(result.rows[0]);
   } catch (error) {
