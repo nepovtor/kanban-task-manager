@@ -1,20 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import pkg from 'pg';
-const { Pool } = pkg;
+import pool from './db.js';
+import boardsRouter from './routes/boards.js';
+import columnsRouter from './routes/columns.js';
+import tasksRouter from './routes/tasks.js';
 
 const app = express();
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'kanban',
-  password: 'your_password',
-  port: 5432
-});
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use('/boards', boardsRouter);
+app.use('/columns', columnsRouter);
+app.use('/tasks', tasksRouter);
 
 // Получение доски с колонками и задачами
 app.get('/api/board/:id', async (req, res) => {
