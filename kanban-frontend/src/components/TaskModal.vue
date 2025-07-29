@@ -4,7 +4,6 @@
       <h3>Новая задача</h3>
       <input v-model="title" placeholder="Заголовок" />
       <textarea v-model="description" placeholder="Описание"></textarea>
-      <input type="date" v-model="deadline" />
 
       <div class="actions">
         <button @click="createTask">Создать</button>
@@ -23,14 +22,12 @@ const emit = defineEmits(['created', 'close'])
 
 const title = ref('')
 const description = ref('')
-const deadline = ref(null)
 
 async function createTask() {
   await axios.post('http://localhost:3000/api/tasks', {
     column_id: props.columnId,
     title: title.value,
     description: description.value,
-    deadline: deadline.value,
     position: props.position
   })
   emit('created')
