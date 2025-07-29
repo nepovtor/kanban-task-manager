@@ -4,17 +4,40 @@ import pool from './db/config.js';
 import boardsRouter from './routes/boards.js';
 import columnsRouter from './routes/columns.js';
 import tasksRouter from './routes/tasks.js';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
 
 const app = express();
+const SECRET_KEY = 'super_secret_key';
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
-// Тестовый маршрут для проверки сервера
+// Пример пользователей (лучше через БД)
+const users = [
+  { id: 1, username: 'admin', password: '123456' }
+];
+
+// Тестовый маршрут
 app.get('/', (req, res) => {
   res.send('Kanban backend is running');
 });
 
+// Логин
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (!user) {
+    return res.status(401).json({ message: 'Неверный логин или пароль' });
+  }
+
+  const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+  res.json({ token });
+});
+
+// API маршруты
 app.use('/boards', boardsRouter);
 app.use('/columns', columnsRouter);
 app.use('/tasks', tasksRouter);
@@ -38,7 +61,7 @@ app.get('/api/board/:id', async (req, res) => {
   }
 });
 
-// API для получения данных доски
+// Получение колонок и задач по boardId
 app.get('/api/columns/board/:boardId', async (req, res) => {
   try {
     const { boardId } = req.params;
