@@ -6,6 +6,7 @@ import columnsRouter from './routes/columns.js';
 import tasksRouter from './routes/tasks.js';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
+import authRoutes from './routes/auth.js';
 
 const app = express();
 const SECRET_KEY = 'super_secret_key';
@@ -13,7 +14,7 @@ const SECRET_KEY = 'super_secret_key';
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-
+app.use('/api', authRoutes);
 // Пример пользователей (лучше через БД)
 const users = [
   { id: 1, username: 'admin', password: '123456' }

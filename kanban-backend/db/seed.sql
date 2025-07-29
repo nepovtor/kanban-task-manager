@@ -1,20 +1,16 @@
--- Добавляем тестовую доску
-INSERT INTO boards (name)
-VALUES ('Пример доски')
-RETURNING id;
+INSERT INTO users (email, password) 
+VALUES ('test@example.com', '$2b$10$yM2jEXAMPLEHASHEDPASSWORD');
 
--- Предположим, что ID доски будет 1
-INSERT INTO columns (board_id, name, position)
+INSERT INTO boards (name) VALUES ('Пример доски');
+
+INSERT INTO columns (board_id, name)
 VALUES 
-(1, 'To Do', 1),
-(1, 'In Progress', 2),
-(1, 'Done', 3);
+  (1, 'To Do'),
+  (1, 'In Progress'),
+  (1, 'Done');
 
--- Добавляем задачи для колонок
--- Предположим, что колонки будут иметь ID 1, 2, 3
-INSERT INTO tasks (column_id, title, description, position)
+INSERT INTO tasks (column_id, title, description)
 VALUES
-(1, 'Настроить проект', 'Инициализировать backend и frontend', 1),
-(1, 'Настроить базу данных', 'Создать таблицы и подключение', 2),
-(2, 'Реализовать API', 'Создать маршруты для получения колонок и задач', 1),
-(3, 'Запустить фронтенд', 'Проверить работу доски с тестовыми данными', 1);
+  (1, 'Создать проект', 'Инициализировать Vue и Express'),
+  (2, 'Подключить БД', 'Настроить PostgreSQL и миграции'),
+  (3, 'Реализовать логин', 'Добавить JWT авторизацию');
