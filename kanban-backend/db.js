@@ -1,6 +1,3 @@
-import { Pool } from 'pg';
-import config from './db/config.js';
-
-const pool = new Pool(config);
+import pool from './db/config.js';
 
 export default pool;
