@@ -11,17 +11,31 @@
         <KanbanTask :task="element" />
       </template>
     </VueDraggableNext>
+
+    <button @click="showModal = true">➕ Добавить задачу</button>
+    <TaskModal
+      v-if="showModal"
+      :column-id="column.id"
+      :position="column.tasks.length"
+      :show="showModal"
+      @created="onTaskCreated"
+      @close="showModal = false"
+    />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import KanbanTask from './KanbanTask.vue'
+import TaskModal from './TaskModal.vue'
 
 const props = defineProps(['column'])
 const emit = defineEmits(['task-dragged'])
 
-const onDragEnd = (event) => {
+const showModal = ref(false)
+
+function onDragEnd(event) {
   if (event.to !== event.from) {
     emit('task-dragged', {
       taskId: parseInt(event.item.dataset.id),
@@ -29,6 +43,11 @@ const onDragEnd = (event) => {
       newPosition: event.newIndex
     })
   }
+}
+
+function onTaskCreated() {
+  // простой способ обновить данные после создания задачи
+  location.reload()
 }
 </script>
 
