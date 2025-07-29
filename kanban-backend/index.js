@@ -1,43 +1,26 @@
-// Импорты
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-require('dotenv').config();
 
-// Подключение к БД
-const db = require('./db');
+dotenv.config();
 
-// Инициализация сервера
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(bodyParser.json());
 
-// Базовая проверка работоспособности
+// Пример маршрута
 app.get('/', (req, res) => {
-  res.send('Backend is working');
+  res.send('Kanban API is running');
 });
 
-// Проверка БД
-app.get('/test-db', async (req, res) => {
-  try {
-    const result = await db.query('SELECT NOW()');
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Подключение маршрутов
-const taskRoutes = require('./routes/tasks');
-const columnRoutes = require('./routes/columns');
-const boardRoutes = require('./routes/boards');
-
-app.use('/api/tasks', taskRoutes);
-app.use('/api/columns', columnRoutes);
-app.use('/api/boards', boardRoutes);
+// Подключение роутов задач
+const tasksRouter = require('./routes/tasks');
+app.use('/api/tasks', tasksRouter);
 
 // Запуск сервера
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
