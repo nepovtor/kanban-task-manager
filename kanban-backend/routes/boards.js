@@ -1,10 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import pool from '../db.js';
+
+const router = Router();
 
 // Получить все доски
 router.get('/', async (req, res) => {
   try {
-    const result = await req.pool.query('SELECT * FROM boards');
+    const result = await pool.query('SELECT * FROM boards');
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { title } = req.body;
   try {
-    const result = await req.pool.query(
+    const result = await pool.query(
       'INSERT INTO boards (title) VALUES ($1) RETURNING *',
       [title]
     );
@@ -27,4 +29,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

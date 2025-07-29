@@ -1,11 +1,6 @@
-const { Pool } = require('pg');
+import { Pool } from 'pg';
+import config from './db/config.js';
 
-const pool = new Pool({
-  user: 'kanban_user',
-  host: 'localhost',
-  database: 'kanban_db',
-  password: 'kanban_pass',
-  port: 5432
-});
+const pool = new Pool(config);
 
-module.exports = pool;
+export default pool;

@@ -1,11 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import pool from '../db.js';
+
+const router = Router();
 
 // Получить все задачи для колонки
 router.get('/column/:columnId', async (req, res) => {
   const { columnId } = req.params;
   try {
-    const result = await req.pool.query('SELECT * FROM tasks WHERE column_id = $1', [columnId]);
+    const result = await pool.query('SELECT * FROM tasks WHERE column_id = $1', [columnId]);
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -17,7 +19,7 @@ router.get('/column/:columnId', async (req, res) => {
 router.post('/', async (req, res) => {
   const { column_id, title, description } = req.body;
   try {
-    const result = await req.pool.query(
+    const result = await pool.query(
       'INSERT INTO tasks (column_id, title, description) VALUES ($1, $2, $3) RETURNING *',
       [column_id, title, description]
     );
@@ -33,7 +35,7 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, description, column_id } = req.body;
   try {
-    const result = await req.pool.query(
+    const result = await pool.query(
       'UPDATE tasks SET title = $1, description = $2, column_id = $3 WHERE id = $4 RETURNING *',
       [title, description, column_id, id]
     );
@@ -48,7 +50,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    await req.pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+    await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
     res.json({ message: 'Task deleted' });
   } catch (error) {
     console.error(error);
@@ -56,4 +58,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
