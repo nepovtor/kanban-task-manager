@@ -7,6 +7,8 @@ import tasksRouter from './routes/tasks.js';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import authRoutes from './routes/auth.js';
+import bcrypt from 'bcrypt';
+
 
 const app = express();
 const SECRET_KEY = 'super_secret_key';
